@@ -6,7 +6,7 @@ public class SoundSystemScript : MonoBehaviour
 {
     public static AudioClip deadSound, buttonSound, jumpSound, battleStartSound, winSound, pipeSound, itemSound, hitSound, flameSound,
                             wrongSound;
-    public static AudioClip forestMazeSoundtrack, battleMonstersSoundtrack, battleBossesSoundtrack;
+    public static AudioClip forestMazeSoundtrack, battleMonstersSoundtrack, battleBossesSoundtrack,musicSoundTrack;
     public static AudioClip genoAttackSound, genoSpecialSound;
     static AudioSource audioSrc;
     // Start is called before the first frame update
@@ -30,7 +30,7 @@ public class SoundSystemScript : MonoBehaviour
         battleMonstersSoundtrack = Resources.Load<AudioClip>("Soundtrack_battle_monsters");
         forestMazeSoundtrack = Resources.Load<AudioClip>("Soundtrack_forest_maze");
         battleBossesSoundtrack = Resources.Load<AudioClip>("Soundtrack_battle_bosses");
-
+        musicSoundTrack = Resources.Load<AudioClip>("music");
         audioSrc = GetComponent<AudioSource>();
     }
 
@@ -91,6 +91,9 @@ public class SoundSystemScript : MonoBehaviour
                 break;
             case "Soundtrack_battle_bosses":
                 audioSrc.clip = battleBossesSoundtrack;
+                break;
+            case "music":
+                audioSrc.clip = musicSoundTrack;
                 break;
         }
         audioSrc.Play();

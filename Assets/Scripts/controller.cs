@@ -8,14 +8,17 @@ public class controller : MonoBehaviour
     public float speed, jumpspeed;
     public Rigidbody2D body;
     public Animator animator;
+    
     public bool inground;
     public int jumps;
 
     // Start is called before the first frame update
     void Start()
     {
+        
         body = this.GetComponent<Rigidbody2D>();
         animator = this.GetComponent<Animator>();
+        //SoundSystemScript.PlaySoundtrack("music");
     }
 
     private void FixedUpdate()
@@ -60,7 +63,7 @@ public class controller : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.name == "suelo")
+        if (collision.gameObject.name.Contains("suelo"))
         {
             animator.SetBool("jumping", false);
             inground = true;
@@ -70,7 +73,7 @@ public class controller : MonoBehaviour
 
     private void OnCollisionExit2D(Collision2D collision)
     {
-        if (collision.gameObject.name == "suelo")
+        if (collision.gameObject.name.Contains("suelo"))
         {
             inground = false;
         }
