@@ -9,6 +9,7 @@ public class controller : MonoBehaviour
     public Rigidbody2D body;
     public Animator animator;
     public bool inground;
+    public int jumps;
 
     // Start is called before the first frame update
     void Start()
@@ -17,60 +18,53 @@ public class controller : MonoBehaviour
         animator = this.GetComponent<Animator>();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void FixedUpdate()
     {
         manageMovement();
         manageJump();
     }
 
-    private void FixedUpdate()
-    {
-
-
-    }
-
     void manageMovement()
     {
-        move = new Vector3(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"), 0f);
+        move = new Vector3(Input.GetAxisRaw("Horizontal"), 0f, 0f);
         if (move != Vector3.zero)
         {
             animator.SetFloat("ejeX", move.x);
             animator.SetFloat("ejeY", move.y);
-            //animator.SetBool("running", true);
+            animator.SetBool("running", true);
         }
         else
         {
-            if (move.x < 0f) {
-                body.AddForce(Vector2.left*speed);
-            }
-            else if (move.x > 0f)
-            {
-                body.AddForce(Vector2.right * speed);
-            }
-            //animator.SetBool("running", false);
+            animator.SetBool("running", false);
         }
-        
-      
+
+        if (move.x < 0f)
+        {
+            body.AddForce(Vector3.left * speed);
+        }
+        else if (move.x > 0f)
+        {
+            body.AddForce(Vector3.right * speed);
+        }
     }
 
     void manageJump()
     {
-        if (Input.GetKey(KeyCode.Space))
+        if (Input.GetKey(KeyCode.Space) && (inground == true || jumps > 0))
         {
-
             body.AddForce(Vector2.up * jumpspeed);
-            //animator.SetFloat("ejeY", move.y);
+            animator.SetBool("jumping", true);
+            jumps -= 1;
         }
-
-
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.name == "suelo")
         {
+            animator.SetBool("jumping", false);
             inground = true;
+            jumps = 2;
         }
     }
 
