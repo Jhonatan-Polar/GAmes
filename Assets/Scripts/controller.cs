@@ -4,11 +4,12 @@ using UnityEngine;
 
 public class controller : MonoBehaviour
 {
-    Vector2 move,jump;
-    public float speed,jumpspeed;
+    Vector3 move, jump;
+    public float speed, jumpspeed;
     public Rigidbody2D body;
     public Animator animator;
-    
+    public bool inground;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -25,26 +26,32 @@ public class controller : MonoBehaviour
 
     private void FixedUpdate()
     {
-        
+
 
     }
 
     void manageMovement()
     {
-        move = new Vector2(Input.GetAxisRaw("Horizontal"), 0);
-        if (move != Vector2.zero)
+        move = new Vector3(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"), 0f);
+        if (move != Vector3.zero)
         {
             animator.SetFloat("ejeX", move.x);
+            animator.SetFloat("ejeY", move.y);
             //animator.SetBool("running", true);
         }
         else
         {
+            if (move.x < 0f) {
+                body.AddForce(Vector2.left*speed);
+            }
+            else if (move.x > 0f)
+            {
+                body.AddForce(Vector2.right * speed);
+            }
             //animator.SetBool("running", false);
         }
-
-        body.AddForce(move*speed);
         
-
+      
     }
 
     void manageJump()
@@ -55,7 +62,23 @@ public class controller : MonoBehaviour
             body.AddForce(Vector2.up * jumpspeed);
             //animator.SetFloat("ejeY", move.y);
         }
-        
 
+
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.name == "suelo")
+        {
+            inground = true;
+        }
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.gameObject.name == "suelo")
+        {
+            inground = false;
+        }
     }
 }
