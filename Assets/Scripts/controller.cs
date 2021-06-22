@@ -63,8 +63,21 @@ public class controller : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.name.Contains("suelo"))
+        print("Toca el suelo");
+        //if (collision.gameObject.name.Contains("suelo"))
+        //{
+        //    animator.SetBool("jumping", false);
+        //    inground = true;
+        //    jumps = 2;
+        //}
+    }
+
+	private void OnTriggerEnter2D(Collider2D collision)
+	{ 
+        if (collision.gameObject.name.Contains("suelo") && 
+            collision.GetType() == typeof(PolygonCollider2D))
         {
+            print("Toca la parte de arriba");
             animator.SetBool("jumping", false);
             inground = true;
             jumps = 2;
